@@ -14,7 +14,7 @@ class AppLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: LoadingAnimationWidget.threeRotatingDots(
+      child: LoadingAnimationWidget.fourRotatingDots(
         color: color,
         size: size,
       ),
