@@ -13,7 +13,7 @@ part of 'login_view_model.dart';
 const loginViewModelProvider = LoginViewModelProvider._();
 
 final class LoginViewModelProvider
-    extends $NotifierProvider<LoginViewModel, String?> {
+    extends $NotifierProvider<LoginViewModel, AsyncValue<UserModel?>> {
   const LoginViewModelProvider._()
     : super(
         from: null,
@@ -33,28 +33,29 @@ final class LoginViewModelProvider
   LoginViewModel create() => LoginViewModel();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(String? value) {
+  Override overrideWithValue(AsyncValue<UserModel?> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<String?>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<UserModel?>>(value),
     );
   }
 }
 
-String _$loginViewModelHash() => r'3b87ab11f240a756b204b0d26e2968458196f500';
+String _$loginViewModelHash() => r'4c9d730821097d98dd32c0c2f7ddd074756f008f';
 
-abstract class _$LoginViewModel extends $Notifier<String?> {
-  String? build();
+abstract class _$LoginViewModel extends $Notifier<AsyncValue<UserModel?>> {
+  AsyncValue<UserModel?> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<String?, String?>;
+    final ref =
+        this.ref as $Ref<AsyncValue<UserModel?>, AsyncValue<UserModel?>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<String?, String?>,
-              String?,
+              AnyNotifier<AsyncValue<UserModel?>, AsyncValue<UserModel?>>,
+              AsyncValue<UserModel?>,
               Object?,
               Object?
             >;

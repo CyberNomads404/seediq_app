@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:seediq_app/src/core/types/result.dart';
-import 'package:seediq_app/src/data/models/user_model.dart';
+import 'package:seediq_app/src/data/models/login_response.dart';
 import 'package:seediq_app/src/data/services/seediq/auth_service.dart';
 
 class AuthRepository {
@@ -9,7 +9,7 @@ class AuthRepository {
 
   AuthRepository(this.authService);
 
-  Future<Result<UserModel>> login(
+  Future<Result<LoginResponse>> login(
     String email,
     String password,
   ) async {
@@ -17,14 +17,10 @@ class AuthRepository {
 
     switch (result) {
       case Success(value: final map):
-        final user = UserModel.fromMap(map);
-        return Success(user);
+        final loginData = LoginResponse.fromMap(map['data']);
+        return Success(loginData);
+
       case Failure(:final error):
-        log(
-          'Erro ao realizar login: $error',
-          name: 'AuthRepository',
-          error: error,
-        );
         return Failure(error);
     }
   }

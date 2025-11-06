@@ -24,28 +24,6 @@ class AuthService {
       );
 
       return Success(response.data);
-    } on DioException catch (e, s) {
-      log(
-        'Erro ao tentar fazer login',
-        name: 'AuthService',
-        error: e,
-        stackTrace: s,
-      );
-
-      final responseData = e.response?.data;
-
-      String message = 'Erro ao tentar fazer login.';
-      if (responseData is Map && responseData['message'] != null) {
-        message = responseData['message'];
-      } else if (e.message != null) {
-        message = e.message!;
-      }
-
-      final exception = AppException(
-        message,
-      );
-
-      return Failure(exception);
     } catch (e, s) {
       log(
         'Erro inesperado no AuthService',

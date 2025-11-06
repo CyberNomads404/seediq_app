@@ -11,6 +11,6 @@ class SplashViewModel extends _$SplashViewModel {
 
   Future<void> checkAuthStatus() async {
     await Future.delayed(const Duration(milliseconds: 2500));
-    state = '/';
+    state = '/login';
   }
 }
