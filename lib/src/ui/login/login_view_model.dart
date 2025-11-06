@@ -23,7 +23,9 @@ class LoginViewModel extends _$LoginViewModel {
     switch (result) {
       case Success(value: final data):
         await localStorage.saveAccessToken(data.accessToken);
-        await localStorage.saveRefreshToken(data.refreshToken);
+        if (data.refreshToken != null) {
+          await localStorage.saveRefreshToken(data.refreshToken!);
+        }
         await localStorage.saveUser(data.user.toJson());
 
         state = AsyncValue.data(data.user);
