@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:seediq_app/src/core/types/result.dart';
 import 'package:seediq_app/src/data/models/login_response.dart';
 import 'package:seediq_app/src/data/services/seediq/auth_service.dart';
