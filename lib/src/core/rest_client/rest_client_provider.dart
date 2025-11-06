@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:seediq_app/src/core/config/env.dart';
+import 'package:seediq_app/src/data/services/services_provider.dart';
+import 'package:seediq_app/src/app_widget.dart';
 
 part 'rest_client_provider.g.dart';
 
@@ -22,6 +24,82 @@ Dio restClient(Ref ref) {
       requestBody: true,
       responseBody: true,
       error: true,
+    ),
+    InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        try {
+          final localStorage = ref.read(localStorageProvider);
+          final token = await localStorage.getAccessToken();
+          if (token != null && token.isNotEmpty) {
+            options.headers['Authorization'] = token;
+          }
+        } catch (_) {}
+
+        return handler.next(options);
+      },
+      onError: (DioError err, handler) async {
+        final response = err.response;
+        if (response != null && response.statusCode == 401) {
+          final localStorage = ref.read(localStorageProvider);
+          final refreshToken = await localStorage.getRefreshToken();
+
+          if (refreshToken == null || refreshToken.isEmpty) {
+            await localStorage.clear();
+            appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/login',
+              (r) => false,
+            );
+            return handler.next(err);
+          }
+
+          try {
+            final refreshDio = Dio(BaseOptions(baseUrl: Env.baseUrl));
+            final refreshResp = await refreshDio.post(
+              '/auth/refresh',
+              options: Options(headers: {'Authorization': refreshToken}),
+            );
+
+            final data = refreshResp.data;
+            final newAccess =
+                data['data']?['accessToken'] ?? data['data']?['access_token'];
+
+            if (newAccess != null && (newAccess as String).isNotEmpty) {
+              await localStorage.saveAccessToken(newAccess);
+
+              final opts = Options(
+                method: err.requestOptions.method,
+                headers: Map<String, dynamic>.from(err.requestOptions.headers),
+              );
+
+              opts.headers?['Authorization'] = newAccess;
+
+              final retryDio = Dio(BaseOptions(baseUrl: Env.baseUrl));
+              final retryResponse = await retryDio.request(
+                err.requestOptions.path,
+                data: err.requestOptions.data,
+                queryParameters: err.requestOptions.queryParameters,
+                options: opts,
+              );
+
+              return handler.resolve(retryResponse);
+            }
+          } catch (e) {
+            await localStorage.clear();
+            appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/login',
+              (r) => false,
+            );
+          }
+
+          await localStorage.clear();
+          appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
+            '/login',
+            (r) => false,
+          );
+        }
+
+        return handler.next(err);
+      },
     ),
   ]);
 
