@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seediq_app/src/core/config/app_theme.dart';
+import 'package:seediq_app/src/core/themes/app_theme.dart';
 import 'package:seediq_app/src/core/config/env.dart';
 import 'package:seediq_app/src/ui/login/login_page.dart';
 import 'package:seediq_app/src/ui/splash/splash_page.dart';

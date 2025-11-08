@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seediq_app/src/core/config/app_colors.dart';
+import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/widgets/app_loading.dart';
 
 import 'splash_view_model.dart';
