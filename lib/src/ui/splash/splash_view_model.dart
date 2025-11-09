@@ -17,9 +17,13 @@ class SplashViewModel extends _$SplashViewModel {
 
     final user = await localStorage.getUser();
 
-    log('splash: user => $user');
-
     await Future.delayed(const Duration(milliseconds: 2500));
+    if (user != null) {
+      log('splash: user => $user');
+      state = '/tabs';
+      return;
+    }
+
     state = '/login';
   }
 }
