@@ -41,7 +41,7 @@ final class SplashViewModelProvider
   }
 }
 
-String _$splashViewModelHash() => r'b1409d49fd117f8b30b53a0e985d85b8e8b788ff';
+String _$splashViewModelHash() => r'c71eda6e2859aaecd4a2b3209504862401d32dcb';
 
 abstract class _$SplashViewModel extends $Notifier<String?> {
   String? build();

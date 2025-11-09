@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:seediq_app/src/core/config/env.dart';
 import 'package:seediq_app/src/data/services/services_provider.dart';
 import 'package:seediq_app/src/app_widget.dart';
+import 'package:seediq_app/src/data/providers/provider.dart';
 
 part 'rest_client_provider.g.dart';
 
@@ -45,6 +46,7 @@ Dio restClient(Ref ref) {
 
           if (refreshToken == null || refreshToken.isEmpty) {
             await localStorage.clear();
+            await ref.read(userProviderProvider).clearUser();
             appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
               '/login',
               (r) => false,
@@ -85,13 +87,16 @@ Dio restClient(Ref ref) {
             }
           } catch (e) {
             await localStorage.clear();
+            await ref.read(userProviderProvider).clearUser();
             appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
               '/login',
               (r) => false,
             );
+            return handler.next(err);
           }
 
           await localStorage.clear();
+          await ref.read(userProviderProvider).clearUser();
           appNavigatorKey.currentState?.pushNamedAndRemoveUntil(
             '/login',
             (r) => false,
