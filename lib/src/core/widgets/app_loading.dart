@@ -7,7 +7,7 @@ class AppLoading extends StatelessWidget {
   final double size;
   const AppLoading({
     super.key,
-    this.color = AppColors.blue,
+    this.color = AppColors.yellow,
     this.size = 60.0,
   });
 
