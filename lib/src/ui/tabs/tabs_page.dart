@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 
-import 'screens/home_page.dart';
-import 'screens/history_page.dart';
-import 'screens/profile_page.dart';
+import 'screens/home/home_page.dart';
+import 'screens/history/history_page.dart';
+import 'screens/profile/profile_page.dart';
 
 class TabsPage extends ConsumerStatefulWidget {
   const TabsPage({super.key});
