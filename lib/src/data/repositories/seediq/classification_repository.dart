@@ -15,9 +15,11 @@ class ClassificationRepository {
     switch (result) {
       case Success(value: final map):
         final categoriesData = ApiResponse.fromMap(map);
-        return Success(categoriesData.data.categories
-            .map<ClassificationModel>((e) => ClassificationModel.fromMap(e))
-            .toList());
+        return Success(
+          categoriesData.data.categories
+              .map<ClassificationModel>((e) => ClassificationModel.fromMap(e))
+              .toList(),
+        );
       case Failure(:final error):
         return Failure(error);
     }
@@ -26,8 +28,9 @@ class ClassificationRepository {
   Future<Result<ClassificationModel>> fetchClassificationDetails(
     String externalId,
   ) async {
-    final result =
-        await classificationService.fetchClassificationDetails(externalId);
+    final result = await classificationService.fetchClassificationDetails(
+      externalId,
+    );
 
     switch (result) {
       case Success(value: final map):
@@ -38,8 +41,14 @@ class ClassificationRepository {
     }
   }
 
-  Future<Result<String>> storeClassification() async {
-    final result = await classificationService.storeClassification();
+  Future<Result<String>> storeClassification({
+    required String categoryExternalId,
+    required String imagePath,
+  }) async {
+    final result = await classificationService.storeClassification(
+      categoryExternalId: categoryExternalId,
+      imagePath: imagePath,
+    );
 
     switch (result) {
       case Success(value: final map):

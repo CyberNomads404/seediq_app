@@ -47,9 +47,23 @@ class ClassificationService {
     }
   }
 
-  Future<Result<Map<String, dynamic>>> storeClassification() async {
+  Future<Result<Map<String, dynamic>>> storeClassification({
+    required String categoryExternalId,
+    required String imagePath,
+  }) async {
     try {
-      final Response response = await restClient.post('/classifications');
+      final formData = FormData.fromMap({
+        'category_external_id': categoryExternalId,
+        'file': await MultipartFile.fromFile(
+          imagePath,
+          filename: imagePath.split('/').last,
+        ),
+      });
+
+      final Response response = await restClient.post(
+        '/classifications',
+        data: formData,
+      );
 
       return Success(response.data);
     } catch (e, s) {
