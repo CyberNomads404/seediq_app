@@ -56,6 +56,47 @@ final class LocalStorageProvider
 
 String _$localStorageHash() => r'1954e2a68747f69f85e77ac0726be7718a18fce6';
 
+@ProviderFor(cameraService)
+const cameraServiceProvider = CameraServiceProvider._();
+
+final class CameraServiceProvider
+    extends $FunctionalProvider<CameraService, CameraService, CameraService>
+    with $Provider<CameraService> {
+  const CameraServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cameraServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$cameraServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<CameraService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  CameraService create(Ref ref) {
+    return cameraService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CameraService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CameraService>(value),
+    );
+  }
+}
+
+String _$cameraServiceHash() => r'232bf2cb718221e8f2cb30cc97dd61432f1b8080';
+
 @ProviderFor(authService)
 const authServiceProvider = AuthServiceProvider._();
 

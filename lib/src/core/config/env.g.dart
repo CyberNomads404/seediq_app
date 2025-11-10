@@ -12,5 +12,5 @@ part of 'env.dart';
 final class _Env {
   static const String baseUrl = 'http://192.168.0.127:80/api/';
 
-  static const String debug = 'false';
+  static const bool debug = false;
 }

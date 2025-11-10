@@ -1,16 +1,21 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
+import 'package:seediq_app/src/core/widgets/image_picker_button.dart';
+import 'package:seediq_app/src/data/services/camera/camera_service_provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   String? _selectedGrainType = 'Soja';
+  File? _capturedImage;
 
   final List<String> _grainTypes = [
     'Soja',
@@ -19,6 +24,29 @@ class _HomePageState extends State<HomePage> {
     'Feijão',
     'Arroz',
   ];
+
+  Future<void> _captureImage() async {
+    try {
+      final cameraService = ref.read(cameraServiceProvider);
+      final image = await cameraService.captureImageFromCamera();
+
+      if (image != null) {
+        setState(() {
+          _capturedImage = image;
+        });
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao capturar imagem: ${e.toString()}'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,72 +82,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 32),
 
               // Container da imagem com botão de câmera
-              Container(
-                width: double.infinity,
+              ImagePickerButton(
+                image: _capturedImage,
+                onTap: _captureImage,
                 height: 280,
-                decoration: BoxDecoration(
-                  color: AppColors.beige,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppColors.blue,
-                    width: 3,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(17),
-                  child: Stack(
-                    children: [
-                      // Placeholder de imagem (simulando grãos de soja)
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.yellow.withOpacity(0.3),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.grid_view_rounded,
-                            size: 80,
-                            color: AppColors.yellow.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-
-                      // Botão de câmera centralizado
-                      Center(
-                        child: Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.camera_alt_outlined,
-                              size: 40,
-                              color: AppColors.grayMedium,
-                            ),
-                            onPressed: () {
-                              // TODO: Implementar captura de imagem
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Capturar imagem'),
-                                  duration: Duration(seconds: 1),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                borderRadius: 20,
               ),
               const SizedBox(height: 32),
 
@@ -183,17 +150,19 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // TODO: Implementar lógica de iniciar análise
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Iniciando análise de $_selectedGrainType',
-                        ),
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
-                  },
+                  onPressed: _capturedImage == null
+                      ? null
+                      : () {
+                          // TODO: Implementar lógica de iniciar análise
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Iniciando análise de $_selectedGrainType',
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.greenDark,
                     shape: RoundedRectangleBorder(
