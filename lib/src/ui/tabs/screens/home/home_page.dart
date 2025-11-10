@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
 import 'package:seediq_app/src/core/widgets/image_picker_button.dart';
-import 'package:seediq_app/src/data/services/camera/camera_service_provider.dart';
+import 'package:seediq_app/src/data/services/services_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
