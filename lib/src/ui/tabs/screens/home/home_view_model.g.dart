@@ -13,8 +13,7 @@ part of 'home_view_model.dart';
 const homeViewModelProvider = HomeViewModelProvider._();
 
 final class HomeViewModelProvider
-    extends
-        $NotifierProvider<HomeViewModel, AsyncValue<ApiResponse<dynamic>?>> {
+    extends $NotifierProvider<HomeViewModel, HomeState> {
   const HomeViewModelProvider._()
     : super(
         from: null,
@@ -34,39 +33,28 @@ final class HomeViewModelProvider
   HomeViewModel create() => HomeViewModel();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<ApiResponse<dynamic>?> value) {
+  Override overrideWithValue(HomeState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<ApiResponse<dynamic>?>>(
-        value,
-      ),
+      providerOverride: $SyncValueProvider<HomeState>(value),
     );
   }
 }
 
-String _$homeViewModelHash() => r'9fc33637d17a1a2e59a80512fc10c30237cf149d';
+String _$homeViewModelHash() => r'f8ee1f11e6a191dba68df7bca5b4a46a303af1c1';
 
-abstract class _$HomeViewModel
-    extends $Notifier<AsyncValue<ApiResponse<dynamic>?>> {
-  AsyncValue<ApiResponse<dynamic>?> build();
+abstract class _$HomeViewModel extends $Notifier<HomeState> {
+  HomeState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref =
-        this.ref
-            as $Ref<
-              AsyncValue<ApiResponse<dynamic>?>,
-              AsyncValue<ApiResponse<dynamic>?>
-            >;
+    final ref = this.ref as $Ref<HomeState, HomeState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<
-                AsyncValue<ApiResponse<dynamic>?>,
-                AsyncValue<ApiResponse<dynamic>?>
-              >,
-              AsyncValue<ApiResponse<dynamic>?>,
+              AnyNotifier<HomeState, HomeState>,
+              HomeState,
               Object?,
               Object?
             >;
