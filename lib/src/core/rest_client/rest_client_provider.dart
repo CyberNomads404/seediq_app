@@ -32,7 +32,10 @@ Dio restClient(Ref ref) {
           final localStorage = ref.read(localStorageProvider);
           final token = await localStorage.getAccessToken();
           if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = token;
+            final authToken = token.startsWith('Bearer ') 
+                ? token 
+                : 'Bearer $token';
+            options.headers['Authorization'] = authToken;
           }
         } catch (_) {}
 
@@ -58,12 +61,16 @@ Dio restClient(Ref ref) {
             final refreshDio = Dio(BaseOptions(baseUrl: Env.baseUrl));
             final refreshResp = await refreshDio.post(
               '/auth/refresh',
-              options: Options(headers: {'Authorization': refreshToken}),
+              options: Options(headers: {
+                'Authorization': refreshToken.startsWith('Bearer ') 
+                    ? refreshToken 
+                    : 'Bearer $refreshToken'
+              }),
             );
 
             final data = refreshResp.data;
             final newAccess =
-                data['data']?['accessToken'] ?? data['data']?['access_token'];
+                data['data']?['access_token'] ?? data['data']?['accessToken'];
 
             if (newAccess != null && (newAccess as String).isNotEmpty) {
               await localStorage.saveAccessToken(newAccess);
@@ -73,7 +80,10 @@ Dio restClient(Ref ref) {
                 headers: Map<String, dynamic>.from(err.requestOptions.headers),
               );
 
-              opts.headers?['Authorization'] = newAccess;
+              final authToken = newAccess.startsWith('Bearer ') 
+                  ? newAccess 
+                  : 'Bearer $newAccess';
+              opts.headers?['Authorization'] = authToken;
 
               final retryDio = Dio(BaseOptions(baseUrl: Env.baseUrl));
               final retryResponse = await retryDio.request(
