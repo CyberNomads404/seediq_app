@@ -26,17 +26,17 @@ class CategoryModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'externalId': externalId,
+      'external_id': externalId,
       'name': name,
-      'iconUrl': iconUrl,
+      'icon_url': iconUrl,
     };
   }
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      externalId: map['externalId'] as String,
+      externalId: map['external_id'] as String,
       name: map['name'] as String,
-      iconUrl: map['iconUrl'] != null ? map['iconUrl'] as String : null,
+      iconUrl: map['icon_url'] != null ? map['icon_url'] as String : null,
     );
   }
 
