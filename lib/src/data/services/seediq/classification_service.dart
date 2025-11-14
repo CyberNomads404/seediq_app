@@ -50,6 +50,7 @@ class ClassificationService {
   Future<Result<Map<String, dynamic>>> storeClassification({
     required String categoryExternalId,
     required String imagePath,
+    String? message,
   }) async {
     try {
       final formData = FormData.fromMap({
@@ -58,6 +59,7 @@ class ClassificationService {
           imagePath,
           filename: imagePath.split('/').last,
         ),
+        if (message != null) 'message': message,
       });
 
       final Response response = await restClient.post(

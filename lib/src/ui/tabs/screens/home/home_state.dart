@@ -10,6 +10,7 @@ class HomeState extends Equatable {
   final List<CategoryModel> categories;
   final CategoryModel? selectedCategory;
   final File? capturedImage;
+  final String? message;
 
   const HomeState({
     this.isLoading = false,
@@ -19,6 +20,7 @@ class HomeState extends Equatable {
     this.categories = const [],
     this.selectedCategory,
     this.capturedImage,
+    this.message,
   });
 
   HomeState copyWith({
@@ -29,6 +31,7 @@ class HomeState extends Equatable {
     List<CategoryModel>? categories,
     CategoryModel? selectedCategory,
     File? capturedImage,
+    String? message,
     bool clearError = false,
     bool clearSuccess = false,
     bool clearImage = false,
@@ -43,6 +46,7 @@ class HomeState extends Equatable {
       categories: categories ?? this.categories,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       capturedImage: clearImage ? null : (capturedImage ?? this.capturedImage),
+      message: message ?? this.message,
     );
   }
 
@@ -55,5 +59,6 @@ class HomeState extends Equatable {
     categories,
     selectedCategory,
     capturedImage,
+    message,
   ];
 }

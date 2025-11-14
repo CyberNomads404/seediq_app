@@ -84,6 +84,7 @@ class HomeViewModel extends _$HomeViewModel {
     final result = await classificationRepository.storeClassification(
       categoryExternalId: state.selectedCategory!.externalId,
       imagePath: state.capturedImage!.path,
+      message: state.message,
     );
 
     switch (result) {
@@ -95,6 +96,7 @@ class HomeViewModel extends _$HomeViewModel {
           selectedCategory: state.categories.isNotEmpty
               ? state.categories.first
               : null, 
+          message: null,
         );
         break;
 

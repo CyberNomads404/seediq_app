@@ -44,10 +44,12 @@ class ClassificationRepository {
   Future<Result<String>> storeClassification({
     required String categoryExternalId,
     required String imagePath,
+    String? message,
   }) async {
     final result = await classificationService.storeClassification(
       categoryExternalId: categoryExternalId,
       imagePath: imagePath,
+      message: message,
     );
 
     switch (result) {
