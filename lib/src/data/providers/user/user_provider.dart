@@ -1,4 +1,4 @@
-import 'package:seediq_app/src/data/models/user_model.dart';
+import 'package:seediq_app/src/data/models/user_model/user_model.dart';
 import 'package:seediq_app/src/data/services/local_storage/local_storage_service.dart';
 
 class UserProvider {

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
 import 'package:seediq_app/src/core/themes/assets.dart';
-import 'package:seediq_app/src/data/models/user_model.dart';
+import 'package:seediq_app/src/data/models/user_model/user_model.dart';
 import 'package:seediq_app/src/ui/login/login_view_model.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
