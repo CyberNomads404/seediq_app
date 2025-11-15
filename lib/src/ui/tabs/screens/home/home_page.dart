@@ -24,37 +24,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     _messageController = TextEditingController(
       text: ref.read(homeViewModelProvider).message ?? '',
     );
-
-    ref.listen<HomeState>(homeViewModelProvider, (previous, next) {
-      if (next.errorMessage != null) {
-        showTopSnackBar(
-          Overlay.of(context),
-          CustomSnackBar.error(
-            message: next.errorMessage!,
-          ),
-        );
-        Future.microtask(
-          () => ref.read(homeViewModelProvider.notifier).clearError(),
-        );
-      }
-
-      if (next.successMessage != null) {
-        showTopSnackBar(
-          Overlay.of(context),
-          CustomSnackBar.success(
-            message: next.successMessage!,
-          ),
-        );
-        Future.microtask(
-          () => ref.read(homeViewModelProvider.notifier).clearSuccess(),
-        );
-      }
-
-      final stateMessage = next.message ?? '';
-      if (_messageController.text != stateMessage) {
-        _messageController.text = stateMessage;
-      }
-    });
   }
 
   @override
@@ -90,6 +59,37 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(homeViewModelProvider);
+
+    ref.listen<HomeState>(homeViewModelProvider, (previous, next) {
+      if (next.errorMessage != null) {
+        Future.microtask(() {
+          showTopSnackBar(
+            Overlay.of(context),
+            CustomSnackBar.error(
+              message: next.errorMessage!,
+            ),
+          );
+          ref.read(homeViewModelProvider.notifier).clearError();
+        });
+      }
+
+      if (next.successMessage != null) {
+        Future.microtask(() {
+          showTopSnackBar(
+            Overlay.of(context),
+            CustomSnackBar.success(
+              message: next.successMessage!,
+            ),
+          );
+          ref.read(homeViewModelProvider.notifier).clearSuccess();
+        });
+      }
+
+      final stateMessage = next.message ?? '';
+      if (_messageController.text != stateMessage) {
+        Future.microtask(() => _messageController.text = stateMessage);
+      }
+    });
 
     return Scaffold(
       backgroundColor: AppColors.grayLight,
@@ -150,7 +150,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     const SizedBox(height: 8),
 
                     TextFormField(
-                      initialValue: state.message,
+                      controller: _messageController,
                       onChanged: (value) => ref
                           .read(homeViewModelProvider.notifier)
                           .updateMessage(value),
