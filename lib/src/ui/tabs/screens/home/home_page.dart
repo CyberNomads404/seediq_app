@@ -99,7 +99,7 @@ class HomePage extends ConsumerWidget {
                         color: AppColors.grayMedium,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 16),
 
                     ImagePickerButton(
                       image: state.capturedImage,
@@ -114,6 +114,43 @@ class HomePage extends ConsumerWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
+                        'Observações',
+                        style: AppText.body.copyWith(
+                          fontSize: 13,
+                          color: AppColors.grayMedium,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    TextFormField(
+                      initialValue: state.message,
+                      onChanged: (value) => ref
+                          .read(homeViewModelProvider.notifier)
+                          .updateMessage(value),
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Observações (opcional)',
+                        filled: true,
+                        fillColor: AppColors.white,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      style: AppText.medium.copyWith(fontSize: 14),
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
                         'Tipo de grão',
                         style: AppText.body.copyWith(
                           fontSize: 13,
@@ -121,6 +158,7 @@ class HomePage extends ConsumerWidget {
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 8),
 
                     Container(

@@ -47,6 +47,14 @@ class HomeViewModel extends _$HomeViewModel {
     );
   }
 
+  void updateMessage(String? message) {
+    state = state.copyWith(
+      message: message,
+      clearError: true,
+      clearSuccess: true,
+    );
+  }
+
   Future<void> captureImage() async {
     try {
       final cameraService = ref.read(cameraServiceProvider);
@@ -95,7 +103,7 @@ class HomeViewModel extends _$HomeViewModel {
           clearImage: true,
           selectedCategory: state.categories.isNotEmpty
               ? state.categories.first
-              : null, 
+              : null,
           message: null,
         );
         break;
