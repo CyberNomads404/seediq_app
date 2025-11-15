@@ -8,36 +8,22 @@ import 'package:seediq_app/src/ui/tabs/screens/home/home_view_model.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
-  void _handleSubmit(BuildContext context, WidgetRef ref, HomeState state) {
-    if (state.capturedImage == null) {
-      showTopSnackBar(
-        Overlay.of(context),
-        const CustomSnackBar.error(
-          message: 'Por favor, capture uma imagem antes de iniciar a análise.',
-        ),
-      );
-      return;
-    }
+  @override
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
 
-    if (state.selectedCategory == null) {
-      showTopSnackBar(
-        Overlay.of(context),
-        const CustomSnackBar.error(
-          message: 'Por favor, selecione um tipo de grão.',
-        ),
-      );
-      return;
-    }
-
-    ref.read(homeViewModelProvider.notifier).submitClassification();
-  }
+class _HomePageState extends ConsumerState<HomePage> {
+  late final TextEditingController _messageController;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(homeViewModelProvider);
+  void initState() {
+    super.initState();
+    _messageController = TextEditingController(
+      text: ref.read(homeViewModelProvider).message ?? '',
+    );
 
     ref.listen<HomeState>(homeViewModelProvider, (previous, next) {
       if (next.errorMessage != null) {
@@ -63,7 +49,47 @@ class HomePage extends ConsumerWidget {
           () => ref.read(homeViewModelProvider.notifier).clearSuccess(),
         );
       }
+
+      final stateMessage = next.message ?? '';
+      if (_messageController.text != stateMessage) {
+        _messageController.text = stateMessage;
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _handleSubmit(BuildContext context, HomeState state) {
+    if (state.capturedImage == null) {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Por favor, capture uma imagem antes de iniciar a análise.',
+        ),
+      );
+      return;
+    }
+
+    if (state.selectedCategory == null) {
+      showTopSnackBar(
+        Overlay.of(context),
+        const CustomSnackBar.error(
+          message: 'Por favor, selecione um tipo de grão.',
+        ),
+      );
+      return;
+    }
+
+    ref.read(homeViewModelProvider.notifier).submitClassification();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(homeViewModelProvider);
 
     return Scaffold(
       backgroundColor: AppColors.grayLight,
@@ -81,7 +107,6 @@ class HomePage extends ConsumerWidget {
                   children: [
                     const SizedBox(height: 20),
 
-                    // Título
                     const Text(
                       'Nova Análise',
                       style: TextStyle(
@@ -214,7 +239,7 @@ class HomePage extends ConsumerWidget {
                       child: ElevatedButton(
                         onPressed: state.isSubmitting
                             ? null
-                            : () => _handleSubmit(context, ref, state),
+                            : () => _handleSubmit(context, state),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.greenDark,
                           disabledBackgroundColor: AppColors.greenDark

@@ -82,6 +82,22 @@ class HomeViewModel extends _$HomeViewModel {
       return;
     }
 
+    try {
+      final fileExists = await state.capturedImage!.exists();
+      if (!fileExists) {
+        state = state.copyWith(
+          errorMessage:
+              'Arquivo de imagem não encontrado. Por favor, capture novamente.',
+        );
+        return;
+      }
+    } catch (e) {
+      state = state.copyWith(
+        errorMessage: 'Erro ao acessar arquivo de imagem: ${e.toString()}',
+      );
+      return;
+    }
+
     state = state.copyWith(
       isSubmitting: true,
       clearError: true,
@@ -104,7 +120,7 @@ class HomeViewModel extends _$HomeViewModel {
           selectedCategory: state.categories.isNotEmpty
               ? state.categories.first
               : null,
-          message: null,
+          clearMessage: true,
         );
         break;
 

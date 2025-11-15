@@ -35,6 +35,7 @@ class HomeState extends Equatable {
     bool clearError = false,
     bool clearSuccess = false,
     bool clearImage = false,
+    bool clearMessage = false,
   }) {
     return HomeState(
       isLoading: isLoading ?? this.isLoading,
@@ -46,7 +47,7 @@ class HomeState extends Equatable {
       categories: categories ?? this.categories,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       capturedImage: clearImage ? null : (capturedImage ?? this.capturedImage),
-      message: message ?? this.message,
+      message: clearMessage ? null : (message ?? this.message),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:seediq_app/src/core/exceptions/app_exception.dart';
@@ -53,6 +54,14 @@ class ClassificationService {
     String? message,
   }) async {
     try {
+      final file = File(imagePath);
+      final exists = await file.exists();
+      if (!exists) {
+        return Failure(
+          AppException('Arquivo de imagem não encontrado: $imagePath'),
+        );
+      }
+
       final formData = FormData.fromMap({
         'category_external_id': categoryExternalId,
         'file': await MultipartFile.fromFile(
