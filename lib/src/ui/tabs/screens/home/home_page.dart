@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seediq_app/src/core/widgets/image_picker_button.dart';
 import 'package:seediq_app/src/ui/tabs/screens/home/home_state.dart';
 import 'package:seediq_app/src/ui/tabs/screens/home/home_view_model.dart';
@@ -214,9 +215,75 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         style: AppText.medium.copyWith(fontSize: 15),
                         items: state.categories.map((category) {
+                          final iconUrl = category.iconUrl;
+                          Widget leading;
+                          if (iconUrl == null || iconUrl.isEmpty) {
+                            leading = const SizedBox(
+                              width: 28,
+                              height: 28,
+                              child: Icon(
+                                Icons.image,
+                                size: 20,
+                                color: AppColors.grayMedium,
+                              ),
+                            );
+                          } else {
+                            final lowered = iconUrl.toLowerCase();
+                            if (lowered.endsWith('.svg') ||
+                                lowered.contains('.svg?') ||
+                                lowered.contains('image/svg')) {
+                              leading = SvgPicture.network(
+                                iconUrl,
+                                width: 28,
+                                height: 28,
+                                placeholderBuilder: (context) => const SizedBox(
+                                  width: 28,
+                                  height: 28,
+                                  child: Center(
+                                    child: SizedBox(
+                                      width: 12,
+                                      height: 12,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1.5,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              leading = Image.network(
+                                iconUrl,
+                                width: 28,
+                                height: 28,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => const SizedBox(
+                                  width: 28,
+                                  height: 28,
+                                  child: Icon(
+                                    Icons.image,
+                                    size: 20,
+                                    color: AppColors.grayMedium,
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+
                           return DropdownMenuItem<String>(
                             value: category.externalId,
-                            child: Text(category.name),
+                            child: Row(
+                              children: [
+                                leading,
+                                const SizedBox(width: 12),
+                                SizedBox(
+                                  width: 160,
+                                  child: Text(
+                                    category.name,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         }).toList(),
                         onChanged: (String? value) {
