@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seediq_app/src/ui/tabs/screens/history/history_view_page.dart';
 
 class HistoryPage extends ConsumerStatefulWidget {
@@ -215,6 +216,38 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                             color: AppColors
                                                                 .grayMedium,
                                                           ),
+                                                        );
+                                                      }
+
+                                                      final lowered = iconUrl
+                                                          .toLowerCase();
+                                                      if (lowered.endsWith(
+                                                            '.svg',
+                                                          ) ||
+                                                          lowered.contains(
+                                                            '.svg?',
+                                                          ) ||
+                                                          lowered.contains(
+                                                            'image/svg',
+                                                          )) {
+                                                        return SvgPicture.network(
+                                                          iconUrl,
+                                                          fit: BoxFit.cover,
+                                                          placeholderBuilder:
+                                                              (
+                                                                context,
+                                                              ) => const Center(
+                                                                child: SizedBox(
+                                                                  width: 16,
+                                                                  height: 16,
+                                                                  child: CircularProgressIndicator(
+                                                                    strokeWidth:
+                                                                        1.5,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                          // handle load errors with builder that shows fallback
+                                                          // SvgPicture doesn't have errorBuilder, so wrap with a FutureBuilder is heavier; keep placeholder only
                                                         );
                                                       }
 
