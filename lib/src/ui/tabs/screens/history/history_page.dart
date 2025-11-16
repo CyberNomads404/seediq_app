@@ -106,8 +106,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
-                            onTap: () {
-                            },
+                            onTap: () {},
                             borderRadius: BorderRadius.circular(12),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
@@ -126,40 +125,114 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                               ),
                               child: Row(
                                 children: [
+                                  // Imagem maior da classificação (preenche mais o item)
                                   Container(
-                                    width: 56,
-                                    height: 56,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.beige,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                      child: Builder(
-                                        builder: (_) {
-                                          final iconUrl = category.iconUrl;
-                                          if (iconUrl == null ||
-                                              iconUrl.isEmpty) {
-                                            return const Center(
-                                              child: Icon(
-                                                Icons.image,
-                                                color: AppColors.grayMedium,
-                                              ),
-                                            );
-                                          }
+                                    width: 72,
+                                    height: 72,
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Container(
+                                          width: 72,
+                                          height: 72,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.beige,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            child: Builder(
+                                              builder: (_) {
+                                                final fileUrl = item.fileUrl;
+                                                if (fileUrl.isEmpty) {
+                                                  return const Center(
+                                                    child: Icon(
+                                                      Icons.photo,
+                                                      color:
+                                                          AppColors.grayMedium,
+                                                    ),
+                                                  );
+                                                }
 
-                                          return Image.network(
-                                            iconUrl,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (_, __, ___) =>
-                                                const Center(
-                                                  child: Icon(
-                                                    Icons.image,
-                                                    color: AppColors.grayMedium,
-                                                  ),
+                                                return Image.network(
+                                                  fileUrl,
+                                                  width: 72,
+                                                  height: 72,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const Center(
+                                                        child: Icon(
+                                                          Icons.photo,
+                                                          color: AppColors
+                                                              .grayMedium,
+                                                        ),
+                                                      ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+
+                                        // Category image overlaid at top-right (maior para combinar)
+                                        Positioned(
+                                          top: -6,
+                                          right: -6,
+                                          child: Container(
+                                            width: 28,
+                                            height: 28,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.08),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2),
                                                 ),
-                                          );
-                                        },
-                                      ),
+                                              ],
+                                            ),
+                                            child: ClipOval(
+                                              child: Builder(
+                                                builder: (_) {
+                                                  final iconUrl =
+                                                      category.iconUrl;
+                                                  if (iconUrl == null ||
+                                                      iconUrl.isEmpty) {
+                                                    return const Center(
+                                                      child: Icon(
+                                                        Icons.image,
+                                                        size: 14,
+                                                        color: AppColors
+                                                            .grayMedium,
+                                                      ),
+                                                    );
+                                                  }
+
+                                                  return Image.network(
+                                                    iconUrl,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder:
+                                                        (_, __, ___) =>
+                                                            const Center(
+                                                              child: Icon(
+                                                                Icons.image,
+                                                                size: 14,
+                                                                color: AppColors
+                                                                    .grayMedium,
+                                                              ),
+                                                            ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
 
