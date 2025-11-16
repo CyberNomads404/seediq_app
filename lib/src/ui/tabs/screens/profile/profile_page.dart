@@ -23,7 +23,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   Widget build(BuildContext context) {
     final state = ref.watch(profileViewModelProvider);
     final viewModel = ref.read(profileViewModelProvider.notifier);
-    final user = state.user;
 
     return Scaffold(
       body: Stack(
@@ -41,12 +40,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
           ),
-
+          
           SafeArea(
             child: Column(
               children: [
                 const SizedBox(height: 40),
-
+                
                 Container(
                   width: 120,
                   height: 120,
@@ -61,57 +60,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                     ],
                   ),
-                  child: ClipOval(
-                    child: Builder(
-                      builder: (context) {
-                        final avatar = ref
-                            .watch(profileViewModelProvider)
-                            .user
-                            ?.avatarUrl;
-                        if (avatar == null || avatar.isEmpty) {
-                          return const Center(
-                            child: Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Color(0xFF9E9E9E),
-                            ),
-                          );
-                        }
-
-                        return Image.network(
-                          avatar,
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return const Center(
-                              child: SizedBox(
-                                width: 28,
-                                height: 28,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 60,
-                                  color: Color(0xFF9E9E9E),
-                                ),
-                              ),
-                        );
-                      },
-                    ),
+                  child: const Icon(
+                    Icons.person,
+                    size: 60,
+                    color: Color(0xFF9E9E9E),
                   ),
                 ),
                 const SizedBox(height: 16),
-
+                
                 Text(
-                  user?.name ?? '',
+                  state.user?.name ?? 'Júnior',
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -119,7 +77,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 32),
-
+                
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Container(
@@ -143,9 +101,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       children: [
                         _buildStatItem(
                           'Membro desde',
-                          user?.createdAt != null
-                              ? "${user!.createdAt.year.toString()}.${user.createdAt.month.toString().padLeft(2, '0')}"
-                              : '-',
+                          '2025.9',
                         ),
                         Container(
                           width: 1,
@@ -154,17 +110,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         ),
                         _buildStatItem(
                           'Qtd. de Análises',
-                          user?.dashboard != null
-                              ? user!.dashboard!.quantityClassifications
-                                    .toString()
-                              : '0',
+                          '100',
                         ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
-
+                
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -173,13 +126,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                         _buildMenuItem(
                           icon: Icons.lock_outline,
                           title: 'Redefinir senha',
-                          onTap: () {},
+                          onTap: () {
+                          },
                         ),
                         const SizedBox(height: 16),
                         _buildMenuItem(
                           icon: Icons.info_outline,
                           title: 'Sobre nós',
-                          onTap: () {},
+                          onTap: () {
+                          },
                         ),
                         const SizedBox(height: 16),
                         _buildMenuItem(
@@ -196,13 +151,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 ),
                                 actions: [
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, false),
+                                    onPressed: () => Navigator.pop(context, false),
                                     child: const Text('Cancelar'),
                                   ),
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, true),
+                                    onPressed: () => Navigator.pop(context, true),
                                     child: const Text(
                                       'Sair',
                                       style: TextStyle(color: Colors.red),
@@ -211,7 +164,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 ],
                               ),
                             );
-
+                            
                             if (confirm == true) {
                               viewModel.logout();
                             }
@@ -224,7 +177,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ],
             ),
           ),
-
+          
           if (state.isLoading)
             Container(
               color: Colors.black.withOpacity(0.3),
