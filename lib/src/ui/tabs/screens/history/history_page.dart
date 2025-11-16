@@ -99,7 +99,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                         final item = list[index];
                         final category = item.categoryForDisplay;
                         final status = item.status;
-                        final statusLabel = _statusLabel(status);
+                        final statusLabel = item.statusLabel.toUpperCase();
                         final statusColor = _statusColor(status);
 
                         return Material(
@@ -223,23 +223,6 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
         ),
       ),
     );
-  }
-
-  String _statusLabel(String status) {
-    switch (status) {
-      case 'registered':
-        return 'REGISTRADO';
-      case 'in_progress':
-        return 'EM ANDAMENTO';
-      case 'completed':
-        return 'COMPLETO';
-      case 'failed':
-        return 'FALHOU';
-      case 'canceled':
-        return 'CANCELADO';
-      default:
-        return status.toUpperCase();
-    }
   }
 
   Color _statusColor(String status) {
