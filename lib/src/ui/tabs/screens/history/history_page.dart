@@ -125,7 +125,6 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                               ),
                               child: Row(
                                 children: [
-                                  // Imagem maior da classificação (92x92) com melhor UX
                                   Container(
                                     width: 92,
                                     height: 92,
@@ -179,7 +178,6 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                           ),
                                         ),
 
-                                        // Category image overlay centered at the top edge
                                         Positioned.fill(
                                           child: Align(
                                             alignment: Alignment.topCenter,
