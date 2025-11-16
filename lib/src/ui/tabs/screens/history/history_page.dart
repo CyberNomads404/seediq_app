@@ -111,7 +111,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
-                                vertical: 14,
+                                vertical: 16,
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -125,25 +125,25 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                               ),
                               child: Row(
                                 children: [
-                                  // Imagem maior da classificação (preenche mais o item)
+                                  // Imagem maior da classificação (92x92) com melhor UX
                                   Container(
-                                    width: 72,
-                                    height: 72,
+                                    width: 92,
+                                    height: 92,
                                     child: Stack(
                                       clipBehavior: Clip.none,
                                       children: [
                                         Container(
-                                          width: 72,
-                                          height: 72,
+                                          width: 92,
+                                          height: 92,
                                           decoration: BoxDecoration(
                                             color: AppColors.beige,
                                             borderRadius: BorderRadius.circular(
-                                              12,
+                                              14,
                                             ),
                                           ),
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(
-                                              12,
+                                              14,
                                             ),
                                             child: Builder(
                                               builder: (_) {
@@ -154,14 +154,15 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                       Icons.photo,
                                                       color:
                                                           AppColors.grayMedium,
+                                                      size: 28,
                                                     ),
                                                   );
                                                 }
 
                                                 return Image.network(
                                                   fileUrl,
-                                                  width: 72,
-                                                  height: 72,
+                                                  width: 92,
+                                                  height: 92,
                                                   fit: BoxFit.cover,
                                                   errorBuilder: (_, __, ___) =>
                                                       const Center(
@@ -169,6 +170,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                           Icons.photo,
                                                           color: AppColors
                                                               .grayMedium,
+                                                          size: 28,
                                                         ),
                                                       ),
                                                 );
@@ -177,57 +179,67 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                           ),
                                         ),
 
-                                        // Category image overlaid at top-right (maior para combinar)
-                                        Positioned(
-                                          top: -6,
-                                          right: -6,
-                                          child: Container(
-                                            width: 28,
-                                            height: 28,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.white,
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.08),
-                                                  blurRadius: 4,
-                                                  offset: const Offset(0, 2),
-                                                ),
-                                              ],
-                                            ),
-                                            child: ClipOval(
-                                              child: Builder(
-                                                builder: (_) {
-                                                  final iconUrl =
-                                                      category.iconUrl;
-                                                  if (iconUrl == null ||
-                                                      iconUrl.isEmpty) {
-                                                    return const Center(
-                                                      child: Icon(
-                                                        Icons.image,
-                                                        size: 14,
-                                                        color: AppColors
-                                                            .grayMedium,
+                                        // Category image overlay centered at the top edge
+                                        Positioned.fill(
+                                          child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Transform.translate(
+                                              offset: const Offset(36, -10),
+                                              child: Container(
+                                                width: 36,
+                                                height: 36,
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.white,
+                                                  shape: BoxShape.circle,
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(0.08),
+                                                      blurRadius: 4,
+                                                      offset: const Offset(
+                                                        0,
+                                                        2,
                                                       ),
-                                                    );
-                                                  }
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: ClipOval(
+                                                  child: Builder(
+                                                    builder: (_) {
+                                                      final iconUrl =
+                                                          category.iconUrl;
+                                                      if (iconUrl == null ||
+                                                          iconUrl.isEmpty) {
+                                                        return const Center(
+                                                          child: Icon(
+                                                            Icons.image,
+                                                            size: 16,
+                                                            color: AppColors
+                                                                .grayMedium,
+                                                          ),
+                                                        );
+                                                      }
 
-                                                  return Image.network(
-                                                    iconUrl,
-                                                    fit: BoxFit.cover,
-                                                    errorBuilder:
-                                                        (_, __, ___) =>
-                                                            const Center(
+                                                      return Image.network(
+                                                        iconUrl,
+                                                        fit: BoxFit.cover,
+                                                        errorBuilder:
+                                                            (
+                                                              _,
+                                                              __,
+                                                              ___,
+                                                            ) => const Center(
                                                               child: Icon(
                                                                 Icons.image,
-                                                                size: 14,
+                                                                size: 16,
                                                                 color: AppColors
                                                                     .grayMedium,
                                                               ),
                                                             ),
-                                                  );
-                                                },
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -236,7 +248,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                     ),
                                   ),
 
-                                  const SizedBox(width: 12),
+                                  const SizedBox(width: 16),
 
                                   Expanded(
                                     child: Column(
