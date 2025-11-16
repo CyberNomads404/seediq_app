@@ -1,6 +1,5 @@
 import 'package:seediq_app/src/core/types/result.dart';
 import 'package:seediq_app/src/data/models/api_response.dart';
-import 'package:seediq_app/src/data/models/category_model.dart';
 import 'package:seediq_app/src/data/models/classification_model.dart';
 import 'package:seediq_app/src/data/services/seediq/classification_service.dart';
 
@@ -14,12 +13,12 @@ class ClassificationRepository {
 
     switch (result) {
       case Success(value: final map):
-        final categoriesData = ApiResponse.fromMap(map);
-        return Success(
-          categoriesData.data.categories
-              .map<ClassificationModel>((e) => ClassificationModel.fromMap(e))
-              .toList(),
-        );
+        final classificationsData = ApiResponse<ClassificationData>.fromMap(
+            map,
+            fromJson: ClassificationData.fromJson,
+          );
+        
+        return Success(classificationsData.data!.categories);
       case Failure(:final error):
         return Failure(error);
     }
@@ -34,8 +33,16 @@ class ClassificationRepository {
 
     switch (result) {
       case Success(value: final map):
-        final categoryData = ApiResponse.fromMap(map);
-        return Success(categoryData.data);
+        final classificationData = ApiResponse<ClassificationModel>.fromMap(
+          map,
+          fromJson: (json) {
+            final raw = json as Map<String, dynamic>;
+            final classificationRow = raw;
+            return ClassificationModel.fromMap(classificationRow);
+          },
+        ).data!;
+
+        return Success(classificationData);
       case Failure(:final error):
         return Failure(error);
     }
@@ -59,5 +66,21 @@ class ClassificationRepository {
       case Failure(:final error):
         return Failure(error);
     }
+  }
+}
+
+class ClassificationData {
+  final List<ClassificationModel> categories;
+
+  ClassificationData({required this.categories});
+
+  factory ClassificationData.fromJson(dynamic json) {
+    final map = json as Map<String, dynamic>;
+    return ClassificationData(
+      categories: (map['classifications'] as List?)
+              ?.map((e) => ClassificationModel.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
   }
 }

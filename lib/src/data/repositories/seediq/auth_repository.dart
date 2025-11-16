@@ -18,8 +18,8 @@ class AuthRepository {
     switch (result) {
       case Success(value: final map):
         final loginData = LoginResponse.fromMap(map['data']);
-        return Success(loginData);
 
+        return Success(loginData);
       case Failure(:final error):
         return Failure(error);
     }
@@ -38,8 +38,8 @@ class AuthRepository {
             return UserModel.fromMap(userJson as Map<String, dynamic>);
           },
         ).data!;
-        return Success(loginData);
 
+        return Success(loginData);
       case Failure(:final error):
         return Failure(error);
     }
@@ -51,7 +51,6 @@ class AuthRepository {
     switch (result) {
       case Success(value: _):
         return Success(null);
-
       case Failure(:final error):
         return Failure(error);
     }

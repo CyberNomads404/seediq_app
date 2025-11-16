@@ -60,33 +60,33 @@ class ClassificationModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'externalId': externalId,
+      'external_id': externalId,
       'status': status,
-      'statusLabel': statusLabel,
+      'status_label': statusLabel,
       'message': message,
-      'fileUrl': fileUrl,
-      'categoryForDisplay': categoryForDisplay.toMap(),
+      'file_url': fileUrl,
+      'category_for_display': categoryForDisplay.toMap(),
       'result': result?.toMap(),
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'createdAtHuman': createdAtHuman,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
-      'updatedAtHuman': updatedAtHuman,
+      'created_at': createdAt.millisecondsSinceEpoch,
+      'created_at_human': createdAtHuman,
+      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'updated_at_human': updatedAtHuman,
     };
   }
 
   factory ClassificationModel.fromMap(Map<String, dynamic> map) {
     return ClassificationModel(
-      externalId: map['externalId'] as String,
+      externalId: map['external_id'] as String,
       status: map['status'] as String,
-      statusLabel: map['statusLabel'] as String,
+      statusLabel: map['status_label'] as String,
       message: map['message'] != null ? map['message'] as String : null,
-      fileUrl: map['fileUrl'] as String,
-      categoryForDisplay: CategoryModel.fromMap(map['categoryForDisplay'] as Map<String,dynamic>),
+      fileUrl: map['file_url'] as String,
+      categoryForDisplay: CategoryModel.fromMap(map['category_for_display'] as Map<String,dynamic>),
       result: map['result'] != null ? ClassificationResultModel.fromMap(map['result'] as Map<String,dynamic>) : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      createdAtHuman: map['createdAtHuman'] as String,
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int),
-      updatedAtHuman: map['updatedAtHuman'] as String,
+      createdAt: DateTime.parse(map['created_at']),
+      createdAtHuman: map['created_at_human'] as String,
+      updatedAt: DateTime.parse(map['updated_at']),
+      updatedAtHuman: map['updated_at_human'] as String,
     );
   }
 
