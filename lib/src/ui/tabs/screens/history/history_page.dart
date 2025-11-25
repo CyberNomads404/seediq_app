@@ -107,7 +107,12 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(12),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                '/classification_details',
+                                arguments: item.externalId,
+                              );
+                            },
                             borderRadius: BorderRadius.circular(12),
                             child: Container(
                               padding: const EdgeInsets.symmetric(

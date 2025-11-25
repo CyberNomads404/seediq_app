@@ -9,7 +9,6 @@ part 'classification_details_view_model.g.dart';
 class ClassificationDetailsViewModel extends _$ClassificationDetailsViewModel {
   @override
   ClassificationDetailsState build() {
-    Future.microtask(() => fetchClassificationDetails('some_external_id'));
     return const ClassificationDetailsState();
   }
 
@@ -20,6 +19,8 @@ class ClassificationDetailsViewModel extends _$ClassificationDetailsViewModel {
     final result = await classificationRepository.fetchClassificationDetails(
       externalId,
     );
+
+    if (!ref.mounted) return;
 
     switch (result) {
       case Success(value: final classification):

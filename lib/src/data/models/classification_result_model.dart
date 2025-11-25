@@ -85,9 +85,9 @@ class ClassificationResultModel {
       burned: map['burned'] != null ? map['burned'] as num : null,
       greenish: map['greenish'] != null ? map['greenish'] as num : null,
       small: map['small'] != null ? map['small'] as num : null,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
+      createdAt: DateTime.parse(map['created_at']),
       createdAtHuman: map['created_at_human'] as String,
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at'] as int),
+      updatedAt: DateTime.parse(map['updated_at']),
       updatedAtHuman: map['updated_at_human'] as String,
     );
   }

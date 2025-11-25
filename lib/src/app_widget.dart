@@ -23,7 +23,11 @@ class AppWidget extends StatelessWidget {
         '/': (context) => const SplashPage(),
         '/login': (context) => const LoginPage(),
         '/tabs': (context) => const TabsPage(),
-        '/classification_details': (context) => const ClassificationDetailsPage(),
+        '/classification_details': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments;
+          final externalId = args is String ? args : null;
+          return ClassificationDetailsPage(externalId: externalId);
+        },
       },
     );
   }
