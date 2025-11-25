@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seediq_app/src/core/themes/app_theme.dart';
 import 'package:seediq_app/src/core/config/env.dart';
+import 'package:seediq_app/src/ui/classification_details/classification_details_page.dart';
 import 'package:seediq_app/src/ui/login/login_page.dart';
 import 'package:seediq_app/src/ui/splash/splash_page.dart';
 import 'package:seediq_app/src/ui/tabs/tabs_page.dart';
@@ -22,6 +23,7 @@ class AppWidget extends StatelessWidget {
         '/': (context) => const SplashPage(),
         '/login': (context) => const LoginPage(),
         '/tabs': (context) => const TabsPage(),
+        '/classification_details': (context) => const ClassificationDetailsPage(),
       },
     );
   }
