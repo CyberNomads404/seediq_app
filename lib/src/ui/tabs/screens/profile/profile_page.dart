@@ -389,7 +389,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               // TODO: Implementar
             },
           ),
-          const Divider(height: 1, indent: 60),
+          const Divider(height: 1, indent: 0),
           _buildMenuItem(
             icon: Icons.info_outline,
             title: 'Sobre nós',
@@ -399,7 +399,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               // TODO: Implementar
             },
           ),
-          const Divider(height: 1, indent: 60),
+          const Divider(height: 1, indent: 0),
           _buildMenuItem(
             icon: Icons.help_outline,
             title: 'Ajuda e suporte',
@@ -409,7 +409,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               // TODO: Implementar
             },
           ),
-          const Divider(height: 1, indent: 60),
+          const Divider(height: 1, indent: 0),
           _buildMenuItem(
             icon: Icons.logout,
             title: 'Sair da conta',
