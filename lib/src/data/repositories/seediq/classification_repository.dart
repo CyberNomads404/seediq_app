@@ -8,17 +8,24 @@ class ClassificationRepository {
 
   ClassificationRepository(this.classificationService);
 
-  Future<Result<List<ClassificationModel>>> fetchClassifications() async {
-    final result = await classificationService.fetchClassifications();
+  Future<Result<List<ClassificationModel>>> fetchClassifications({
+    required int page,
+    int perPage = 10,
+  }) async {
+    final result = await classificationService.fetchClassifications(
+      page: page,
+      perPage: perPage,
+    );
 
     switch (result) {
       case Success(value: final map):
         final classificationsData = ApiResponse<ClassificationData>.fromMap(
-            map,
-            fromJson: ClassificationData.fromJson,
-          );
-        
+          map,
+          fromJson: ClassificationData.fromJson,
+        );
+
         return Success(classificationsData.data!.categories);
+
       case Failure(:final error):
         return Failure(error);
     }
@@ -71,7 +78,9 @@ class ClassificationRepository {
   Future<Result<String>> reanalyzeClassification(
     String classificationExternalId,
   ) async {
-    final result = await classificationService.reanalyzeClassification(classificationExternalId);
+    final result = await classificationService.reanalyzeClassification(
+      classificationExternalId,
+    );
 
     switch (result) {
       case Success(value: final map):
@@ -91,8 +100,11 @@ class ClassificationData {
   factory ClassificationData.fromJson(dynamic json) {
     final map = json as Map<String, dynamic>;
     return ClassificationData(
-      categories: (map['classifications'] as List?)
-              ?.map((e) => ClassificationModel.fromMap(e as Map<String, dynamic>))
+      categories:
+          (map['classifications'] as List?)
+              ?.map(
+                (e) => ClassificationModel.fromMap(e as Map<String, dynamic>),
+              )
               .toList() ??
           [],
     );

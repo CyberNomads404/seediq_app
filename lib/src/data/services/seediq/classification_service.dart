@@ -12,9 +12,18 @@ class ClassificationService {
     required this.restClient,
   });
 
-  Future<Result<Map<String, dynamic>>> fetchClassifications() async {
+  Future<Result<Map<String, dynamic>>> fetchClassifications({
+    required int page,
+    required int perPage,
+  }) async {
     try {
-      final Response response = await restClient.get('/classifications');
+      final response = await restClient.get(
+        '/classifications',
+        queryParameters: {
+          'page': page,
+          'per_page': perPage,
+        },
+      );
 
       return Success(response.data);
     } catch (e, s) {

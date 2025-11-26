@@ -14,12 +14,35 @@ class HistoryPage extends ConsumerStatefulWidget {
 }
 
 class _HistoryPageState extends ConsumerState<HistoryPage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(historyViewModelProvider.notifier).fetchClassifications();
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      ref.read(historyViewModelProvider.notifier).loadMore();
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9); 
   }
 
   @override
@@ -44,12 +67,11 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                 ],
               ),
             ),
-
             const Divider(height: 1),
-
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () async => viewModel.fetchClassifications(),
+                onRefresh: () async =>
+                    viewModel.fetchClassifications(refresh: true),
                 child: Builder(
                   builder: (context) {
                     final list = state.classifications;
@@ -91,13 +113,19 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                     }
 
                     return ListView.separated(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,
                       ),
-                      itemCount: list.length,
+                      itemCount: list.length + (state.hasMore ? 1 : 0),
                       separatorBuilder: (_, __) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
+                        if (index >= list.length) {
+                          return _buildLoadingIndicator();
+                        }
+
                         final item = list[index];
                         final category = item.categoryForDisplay;
                         final status = item.status;
@@ -143,14 +171,12 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                           height: 92,
                                           decoration: BoxDecoration(
                                             color: AppColors.beige,
-                                            borderRadius: BorderRadius.circular(
-                                              14,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(14),
                                           ),
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              14,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(14),
                                             child: Builder(
                                               builder: (_) {
                                                 final fileUrl = item.fileUrl;
@@ -170,21 +196,21 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                   width: 92,
                                                   height: 92,
                                                   fit: BoxFit.cover,
-                                                  errorBuilder: (_, __, ___) =>
-                                                      const Center(
-                                                        child: Icon(
-                                                          Icons.photo,
-                                                          color: AppColors
-                                                              .grayMedium,
-                                                          size: 28,
-                                                        ),
-                                                      ),
+                                                  errorBuilder:
+                                                      (_, __, ___) =>
+                                                          const Center(
+                                                    child: Icon(
+                                                      Icons.photo,
+                                                      color:
+                                                          AppColors.grayMedium,
+                                                      size: 28,
+                                                    ),
+                                                  ),
                                                 );
                                               },
                                             ),
                                           ),
                                         ),
-
                                         Positioned.fill(
                                           child: Align(
                                             alignment: Alignment.topCenter,
@@ -201,10 +227,8 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                       color: Colors.black
                                                           .withOpacity(0.08),
                                                       blurRadius: 4,
-                                                      offset: const Offset(
-                                                        0,
-                                                        2,
-                                                      ),
+                                                      offset:
+                                                          const Offset(0, 2),
                                                     ),
                                                   ],
                                                 ),
@@ -225,33 +249,31 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                         );
                                                       }
 
-                                                      final lowered = iconUrl
-                                                          .toLowerCase();
-                                                      if (lowered.endsWith(
-                                                            '.svg',
-                                                          ) ||
+                                                      final lowered =
+                                                          iconUrl.toLowerCase();
+                                                      if (lowered
+                                                              .endsWith('.svg') ||
                                                           lowered.contains(
-                                                            '.svg?',
-                                                          ) ||
+                                                              '.svg?') ||
                                                           lowered.contains(
-                                                            'image/svg',
-                                                          )) {
-                                                        return SvgPicture.network(
+                                                              'image/svg')) {
+                                                        return SvgPicture
+                                                            .network(
                                                           iconUrl,
                                                           fit: BoxFit.cover,
                                                           placeholderBuilder:
-                                                              (
-                                                                context,
-                                                              ) => const Center(
-                                                                child: SizedBox(
-                                                                  width: 16,
-                                                                  height: 16,
-                                                                  child: CircularProgressIndicator(
-                                                                    strokeWidth:
-                                                                        1.5,
-                                                                  ),
-                                                                ),
+                                                              (context) =>
+                                                                  const Center(
+                                                            child: SizedBox(
+                                                              width: 16,
+                                                              height: 16,
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                strokeWidth:
+                                                                    1.5,
                                                               ),
+                                                            ),
+                                                          ),
                                                         );
                                                       }
 
@@ -259,18 +281,15 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                         iconUrl,
                                                         fit: BoxFit.cover,
                                                         errorBuilder:
-                                                            (
-                                                              _,
-                                                              __,
-                                                              ___,
-                                                            ) => const Center(
-                                                              child: Icon(
-                                                                Icons.image,
-                                                                size: 16,
-                                                                color: AppColors
-                                                                    .grayMedium,
-                                                              ),
-                                                            ),
+                                                            (_, __, ___) =>
+                                                                const Center(
+                                                          child: Icon(
+                                                            Icons.image,
+                                                            size: 16,
+                                                            color: AppColors
+                                                                .grayMedium,
+                                                          ),
+                                                        ),
                                                       );
                                                     },
                                                   ),
@@ -282,9 +301,7 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                       ],
                                     ),
                                   ),
-
                                   const SizedBox(width: 16),
-
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -300,7 +317,8 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                         ),
                                         const SizedBox(height: 6),
                                         Text(
-                                          '${DateFormatterHelper.formatDateTime(item.createdAt)}',
+                                          DateFormatterHelper.formatDateTime(
+                                              item.createdAt),
                                           style: const TextStyle(
                                             fontSize: 12,
                                             color: AppColors.grayMedium,
@@ -318,7 +336,6 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                       ],
                                     ),
                                   ),
-
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
@@ -346,6 +363,34 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                     );
                   },
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.greenDark),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Carregando mais...',
+              style: AppText.small.copyWith(
+                color: AppColors.grayMedium,
               ),
             ),
           ],
