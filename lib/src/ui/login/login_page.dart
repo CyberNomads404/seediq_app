@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:seediq_app/src/core/config/app_colors.dart';
-import 'package:seediq_app/src/data/models/user_model.dart';
+import 'package:seediq_app/src/core/themes/app_colors.dart';
+import 'package:seediq_app/src/core/themes/app_text.dart';
+import 'package:seediq_app/src/core/themes/assets.dart';
+import 'package:seediq_app/src/data/models/user_model/user_model.dart';
 import 'package:seediq_app/src/ui/login/login_view_model.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -77,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/icon.png',
+                    R.ASSETS_IMAGES_ICON_PNG,
                     width: 220,
                     fit: BoxFit.contain,
                   ),
@@ -114,11 +116,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       const Text(
                         'Email',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.grayMedium,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: AppText.body,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -154,11 +152,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       const Text(
                         'Senha',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.grayMedium,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: AppText.body,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
@@ -234,10 +228,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           const SizedBox(width: 8),
                           const Text(
                             'Lembre de mim',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.navy,
-                            ),
+                            style: AppText.body,
                           ),
                         ],
                       ),
@@ -247,10 +238,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             : () {
                                 // TODO: Implementar recuperação de senha
                               },
-                        child: const Text(
+                        child: Text(
                           'Esqueceu a senha?',
-                          style: TextStyle(
-                            fontSize: 14,
+                          style: AppText.medium.copyWith(
                             color: AppColors.blue,
                             fontWeight: FontWeight.w500,
                           ),
@@ -266,14 +256,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     height: 52,
                     child: ElevatedButton(
                       onPressed: isLoading ? null : _handleLogin,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.greenDark,
-                        disabledBackgroundColor: AppColors.greenDark
-                            .withOpacity(0.6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
                       child: isLoading
                           ? const SizedBox(
                               height: 24,
@@ -285,14 +267,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                               ),
                             )
-                          : const Text(
-                              'Fazer Login',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.white,
-                              ),
-                            ),
+                          : const Text('Fazer Login'),
                     ),
                   ),
                 ],

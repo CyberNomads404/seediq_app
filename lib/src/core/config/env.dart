@@ -1,11 +1,15 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:envied/envied.dart';
 
+part 'env.g.dart';
+
+@Envied(path: '.env') 
 abstract class Env {
-  static String get baseUrl =>
-      dotenv.env['BASE_URL']?.trim().isNotEmpty == true
-          ? dotenv.env['BASE_URL']!
-          : 'http://localhost/api/';
+  @EnviedField(varName: 'BASE_URL')
+  static const String baseUrl = _Env.baseUrl;
 
-  static bool get debug =>
-      dotenv.env['DEBUG']?.toLowerCase() == 'true';
+  @EnviedField(varName: 'FRONT_BASE_URL')
+  static const String frontBaseUrl = _Env.frontBaseUrl;
+
+  @EnviedField(varName: 'DEBUG', defaultValue: false)
+  static const bool debug = _Env.debug == 'true';
 }

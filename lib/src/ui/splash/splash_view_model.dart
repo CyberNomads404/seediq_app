@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:seediq_app/src/data/repositories/repositories_provider.dart';
-import 'package:seediq_app/src/data/services/services_provider.dart';
+import 'package:seediq_app/src/data/providers/provider.dart';
 
 part 'splash_view_model.g.dart';
 
@@ -12,10 +13,17 @@ class SplashViewModel extends _$SplashViewModel {
   }
 
   Future<void> checkAuthStatus() async {
-    final authRepository = ref.read(authRepositoryProvider);
-    final localStorage = ref.read(localStorageProvider);
+    final userProv = ref.read(userProviderProvider);
+    await userProv.loadFromStorage();
+    final user = userProv.user;
 
     await Future.delayed(const Duration(milliseconds: 2500));
+    if (user != null) {
+      log('splash: user => $user');
+      state = '/tabs';
+      return;
+    }
+
     state = '/login';
   }
 }
