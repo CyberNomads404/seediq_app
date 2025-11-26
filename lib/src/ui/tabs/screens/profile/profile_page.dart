@@ -31,16 +31,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       backgroundColor: AppColors.grayLight,
       body: Stack(
         children: [
-          // Header com gradiente
           Container(
-            height: 280,
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
                   AppColors.greenDark,
-                  AppColors.greenDark.withOpacity(0.8),
+                  AppColors.yellow,
                 ],
               ),
             ),
@@ -57,7 +56,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   children: [
                     const SizedBox(height: 24),
 
-                    // Avatar e Nome
                     Column(
                       children: [
                         Stack(
@@ -89,26 +87,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                             _buildDefaultAvatar(),
                                       )
                                     : _buildDefaultAvatar(),
-                              ),
-                            ),
-                            Positioned(
-                              right: 4,
-                              bottom: 4,
-                              child: Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: AppColors.greenDark,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 16,
-                                ),
                               ),
                             ),
                           ],
@@ -145,7 +123,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     ),
                     const SizedBox(height: 32),
 
-                    // Cards de estatísticas
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
@@ -177,13 +154,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Informações do usuário
                     if (user != null) ...[
                       _buildInfoSection(user),
                       const SizedBox(height: 16),
                     ],
 
-                    // Menu de opções
                     _buildMenuSection(viewModel),
                     const SizedBox(height: 32),
                   ],
@@ -192,7 +167,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
           ),
 
-          // Loading overlay
           if (state.isLoading)
             Container(
               color: Colors.black.withOpacity(0.4),
