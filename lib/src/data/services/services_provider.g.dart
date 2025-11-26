@@ -227,3 +227,44 @@ final class ClassificationServiceProvider
 
 String _$classificationServiceHash() =>
     r'83419f8dda29b6d555796613de43f8ce5d3034cf';
+
+@ProviderFor(browserService)
+const browserServiceProvider = BrowserServiceProvider._();
+
+final class BrowserServiceProvider
+    extends $FunctionalProvider<BrowserService, BrowserService, BrowserService>
+    with $Provider<BrowserService> {
+  const BrowserServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'browserServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$browserServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<BrowserService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  BrowserService create(Ref ref) {
+    return browserService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BrowserService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BrowserService>(value),
+    );
+  }
+}
+
+String _$browserServiceHash() => r'abafecabccd08d622aa753e3b791ddc4dd57061d';

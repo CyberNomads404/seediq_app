@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:seediq_app/src/data/services/browser/browser_service.dart';
 import 'package:seediq_app/src/data/services/camera/camera_service.dart';
 import 'package:seediq_app/src/data/services/local_storage/local_storage_service.dart';
 import 'package:seediq_app/src/data/services/seediq/auth_service.dart';
@@ -31,4 +32,9 @@ CategoryService categoryService(Ref ref) {
 @riverpod
 ClassificationService classificationService(Ref ref) {
   return ClassificationService(restClient: ref.read(restClientProvider));
+}
+
+@riverpod
+BrowserService browserService(Ref ref) {
+  return BrowserService();
 }

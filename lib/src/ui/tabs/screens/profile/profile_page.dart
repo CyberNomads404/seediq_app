@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:seediq_app/src/core/constants/link_types.dart';
 import 'package:seediq_app/src/core/helpers/date_formatter_helper.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
@@ -386,17 +387,27 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             subtitle: 'Altere sua senha de acesso',
             iconColor: AppColors.blue,
             onTap: () {
-              // TODO: Implementar
+              ref.read(profileViewModelProvider.notifier).openBrowser(LinkTypes.resetPassword);
             },
           ),
           const Divider(height: 1, indent: 0),
           _buildMenuItem(
             icon: Icons.info_outline,
             title: 'Sobre nós',
+            subtitle: 'Conheça mais sobre os criadores',
+            iconColor: AppColors.greenDark,
+            onTap: () {
+              ref.read(profileViewModelProvider.notifier).openBrowser(LinkTypes.aboutUs);
+            },
+          ),
+          const Divider(height: 1, indent: 0),
+          _buildMenuItem(
+            icon: Icons.menu_book_outlined,
+            title: 'Manual do usuário',
             subtitle: 'Conheça mais sobre o aplicativo',
             iconColor: AppColors.greenDark,
             onTap: () {
-              // TODO: Implementar
+              ref.read(profileViewModelProvider.notifier).openBrowser(LinkTypes.userManual);
             },
           ),
           const Divider(height: 1, indent: 0),
@@ -406,7 +417,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             subtitle: 'Tire suas dúvidas',
             iconColor: AppColors.yellow,
             onTap: () {
-              // TODO: Implementar
+              ref.read(profileViewModelProvider.notifier).openBrowser(LinkTypes.faq);
             },
           ),
           const Divider(height: 1, indent: 0),

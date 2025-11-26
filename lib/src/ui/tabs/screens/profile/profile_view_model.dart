@@ -59,4 +59,14 @@ class ProfileViewModel extends _$ProfileViewModel {
         break;
     }
   }
+
+  Future<void> openBrowser(String url) async {
+    final redirect = ref.read(browserServiceProvider);
+
+    try {
+      await redirect.open(url);
+    } catch (e) {
+      state = state.copyWith(errorMessage: "Erro ao abrir navegador");
+    }
+  }
 }
