@@ -571,18 +571,21 @@ class _ClassificationDetailsPageState
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
-            onPressed: () {
-              ref.read(classificationDetailsViewModelProvider.notifier)
-                 .reanalyzeClassification(widget.externalId!);
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Solicitação de reavaliação enviada!'),
-                ),
-              );
-            },
+            onPressed: () async {
+              await ref.read(classificationDetailsViewModelProvider.notifier)
+                  .reanalyzeClassification(widget.externalId!);
+
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/tabs', arguments: 1); 
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Solicitação de reavaliação enviada!'),
+                  ),
+                );
+              }
+          },
             child: const Text('Confirmar'),
-          ),
+          )
         ],
       ),
     );

@@ -7,14 +7,22 @@ import 'screens/history/history_page.dart';
 import 'screens/profile/profile_page.dart';
 
 class TabsPage extends ConsumerStatefulWidget {
-  const TabsPage({super.key});
+  final int initialIndex;
+
+  const TabsPage({super.key, this.initialIndex = 0});
 
   @override
   ConsumerState<TabsPage> createState() => _TabsPageState();
 }
 
 class _TabsPageState extends ConsumerState<TabsPage> {
-  int _currentIndex = 0;
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialIndex;
+  }
 
   final List<Widget> _pages = <Widget>[
     const HomePage(),
@@ -82,7 +90,7 @@ class _TabsPageState extends ConsumerState<TabsPage> {
     required String label,
   }) {
     final isSelected = _currentIndex == index;
-    
+
     return Expanded(
       child: InkWell(
         onTap: () => setState(() => _currentIndex = index),

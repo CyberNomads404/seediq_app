@@ -22,10 +22,16 @@ class AppWidget extends StatelessWidget {
       routes: {
         '/': (context) => const SplashPage(),
         '/login': (context) => const LoginPage(),
-        '/tabs': (context) => const TabsPage(),
+        '/tabs': (context) {
+          final args = ModalRoute.of(context)?.settings.arguments;
+          final initialIndex = args is int ? args : 0;
+
+          return TabsPage(initialIndex: initialIndex);
+        },
         '/classification_details': (context) {
           final args = ModalRoute.of(context)?.settings.arguments;
           final externalId = args is String ? args : null;
+          
           return ClassificationDetailsPage(externalId: externalId);
         },
       },
