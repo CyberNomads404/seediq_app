@@ -251,8 +251,6 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                                                   ),
                                                                 ),
                                                               ),
-                                                          // handle load errors with builder that shows fallback
-                                                          // SvgPicture doesn't have errorBuilder, so wrap with a FutureBuilder is heavier; keep placeholder only
                                                         );
                                                       }
 

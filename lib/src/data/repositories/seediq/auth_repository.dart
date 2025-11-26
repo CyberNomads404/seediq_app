@@ -1,4 +1,4 @@
-import 'package:seediq_app/src/core/types/result.dart';
+import 'package:seediq_app/src/core/interfaces/api_result_interface.dart';
 import 'package:seediq_app/src/data/models/api_response.dart';
 import 'package:seediq_app/src/data/models/login_response.dart';
 import 'package:seediq_app/src/data/models/user_model/user_model.dart';

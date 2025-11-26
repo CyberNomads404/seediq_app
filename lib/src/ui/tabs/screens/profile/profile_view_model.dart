@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:seediq_app/src/app_widget.dart';
-import 'package:seediq_app/src/core/types/result.dart';
+import 'package:seediq_app/src/core/interfaces/api_result_interface.dart';
 import 'package:seediq_app/src/data/repositories/repositories_provider.dart';
 import 'package:seediq_app/src/data/services/services_provider.dart';
 import 'package:seediq_app/src/ui/tabs/screens/profile/profile_state.dart';

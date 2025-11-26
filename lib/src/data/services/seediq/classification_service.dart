@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:seediq_app/src/core/exceptions/app_exception.dart';
-import 'package:seediq_app/src/core/types/result.dart';
+import 'package:seediq_app/src/core/interfaces/api_result_interface.dart';
 
 class ClassificationService {
   final Dio restClient;
