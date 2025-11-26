@@ -572,6 +572,8 @@ class _ClassificationDetailsPageState
           ),
           ElevatedButton(
             onPressed: () {
+              ref.read(classificationDetailsViewModelProvider.notifier)
+                 .reanalyzeClassification(widget.externalId!);
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(

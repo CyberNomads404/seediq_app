@@ -87,4 +87,24 @@ class ClassificationService {
       return Failure(AppException('Erro ao criar uma classificação.'));
     }
   }
+
+  Future<Result<Map<String, dynamic>>> reanalyzeClassification(
+    String externalId,
+  ) async {
+    try {
+      final Response response = await restClient.put(
+        '/classifications/$externalId/reanalyze',
+      );
+
+      return Success(response.data);
+    } catch (e, s) {
+      log(
+        'Erro inesperado no ClassificationService',
+        name: 'ClassificationService',
+        error: e,
+        stackTrace: s,
+      );
+      return Failure(AppException('Erro ao reanalisar a classificação.'));
+    }
+  }
 }

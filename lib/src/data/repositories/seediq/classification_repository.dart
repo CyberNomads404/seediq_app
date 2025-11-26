@@ -67,6 +67,20 @@ class ClassificationRepository {
         return Failure(error);
     }
   }
+
+  Future<Result<String>> reanalyzeClassification(
+    String classificationExternalId,
+  ) async {
+    final result = await classificationService.reanalyzeClassification(classificationExternalId);
+
+    switch (result) {
+      case Success(value: final map):
+        final categoryData = ApiResponse.fromMap(map);
+        return Success(categoryData.message);
+      case Failure(:final error):
+        return Failure(error);
+    }
+  }
 }
 
 class ClassificationData {

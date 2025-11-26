@@ -37,4 +37,30 @@ class ClassificationDetailsViewModel extends _$ClassificationDetailsViewModel {
         break;
     }
   }
+
+  Future<void> reanalyzeClassification(String externalId) async {
+    state = state.copyWith(isLoading: true, errorMessage: null, successMessage: null);
+
+    final classificationRepository = ref.read(classificationRepositoryProvider);
+    final result = await classificationRepository.reanalyzeClassification(
+      externalId,
+    );
+
+    if (!ref.mounted) return;
+
+    switch (result) {
+      case Success(value: final message):
+        state = state.copyWith(
+          isLoading: false,
+          successMessage: message,
+        );
+        break;
+      case Failure(error: final error):
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: error.toString(),
+        );
+        break;
+    }
+  }
 }
