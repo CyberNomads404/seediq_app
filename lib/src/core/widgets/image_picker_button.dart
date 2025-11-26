@@ -45,13 +45,13 @@ class ImagePickerButton extends StatelessWidget {
               else
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.yellow.withOpacity(0.3),
+                    color: AppColors.gray.withOpacity(0.3),
                   ),
                   child: Center(
                     child: Icon(
                       Icons.grid_view_rounded,
                       size: 80,
-                      color: AppColors.yellow.withOpacity(0.5),
+                      color: AppColors.gray.withOpacity(0.5),
                     ),
                   ),
                 ),
