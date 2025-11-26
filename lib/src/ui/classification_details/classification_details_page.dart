@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:seediq_app/src/core/constants/classification_status_types.dart';
+import 'package:seediq_app/src/core/helpers/date_formatter_helper.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
 import 'package:seediq_app/src/data/models/classification_model.dart';
@@ -91,7 +93,8 @@ class _ClassificationDetailsPageState
   }
 
   Widget _buildContent(ClassificationModel classification) {
-    final isCompleted = classification.status == ClassificationStatusTypes.completed;
+    final isCompleted =
+        classification.status == ClassificationStatusTypes.completed;
     final isFailed = classification.status == ClassificationStatusTypes.failed;
     final isProcessing = !isCompleted && !isFailed;
 
@@ -159,7 +162,8 @@ class _ClassificationDetailsPageState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.warning_amber_rounded, size: 64, color: Colors.orange),
+            const Icon(Icons.warning_amber_rounded,
+                size: 64, color: Colors.orange),
             const SizedBox(height: 16),
             Text(
               'Análise Falhou',
@@ -172,14 +176,17 @@ class _ClassificationDetailsPageState
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _handleReanalysis(),
-                icon: const Icon(Icons.refresh),
-                label: const Text('Reavaliar'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _handleReanalysis(),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Reavaliar'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
                 ),
               ),
             ),
@@ -190,6 +197,8 @@ class _ClassificationDetailsPageState
   }
 
   Widget _buildHeader(ClassificationModel classification) {
+    final category = classification.categoryForDisplay;
+
     return Container(
       color: AppColors.white,
       padding: const EdgeInsets.all(16),
@@ -215,16 +224,83 @@ class _ClassificationDetailsPageState
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            'Classificação - ${classification.categoryForDisplay.name}',
-            style: AppText.large,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            classification.createdAtHuman,
-            style: AppText.small,
+          Row(
+            children: [
+              if (category.iconUrl != null && category.iconUrl!.isNotEmpty)
+                Container(
+                  width: 48,
+                  height: 48,
+                  margin: const EdgeInsets.only(right: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.grayLight,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: _buildCategoryIcon(category.iconUrl!),
+                  ),
+                ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Classificação - ${category.name}',
+                      style: AppText.large,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Criado em: ${DateFormatterHelper.formatDateTime(classification.createdAt)}',
+                      style: AppText.small.copyWith(
+                        color: AppColors.grayMedium,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      classification.createdAtHuman,
+                      style: AppText.small.copyWith(
+                        color: AppColors.grayMedium,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCategoryIcon(String iconUrl) {
+    final lowered = iconUrl.toLowerCase();
+    
+    if (lowered.endsWith('.svg') ||
+        lowered.contains('.svg?') ||
+        lowered.contains('image/svg')) {
+      return SvgPicture.network(
+        iconUrl,
+        fit: BoxFit.cover,
+        placeholderBuilder: (context) => const Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+      );
+    }
+
+    return Image.network(
+      iconUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => const Center(
+        child: Icon(
+          Icons.category,
+          color: AppColors.grayMedium,
+          size: 24,
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:seediq_app/src/core/helpers/date_formatter_helper.dart';
 import 'package:seediq_app/src/core/themes/app_colors.dart';
 import 'package:seediq_app/src/core/themes/app_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -299,10 +300,19 @@ class _HistoryPageState extends ConsumerState<HistoryPage> {
                                         ),
                                         const SizedBox(height: 6),
                                         Text(
+                                          '${DateFormatterHelper.formatDateTime(item.createdAt)}',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.grayMedium,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
                                           item.createdAtHuman,
                                           style: const TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 11,
                                             color: AppColors.grayMedium,
+                                            fontStyle: FontStyle.italic,
                                           ),
                                         ),
                                       ],
