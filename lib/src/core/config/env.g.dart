@@ -10,9 +10,11 @@ part of 'env.dart';
 // ignore_for_file: type=lint
 // generated_from: .env
 final class _Env {
-  static const String baseUrl = 'http://192.168.0.127:80/api/';
+  static const String baseUrl =
+      'https://seed-iq-api-painel.t7kuqr.easypanel.host/api/';
 
-  static const String frontBaseUrl = 'http://192.168.0.127:80/';
+  static const String frontBaseUrl =
+      'https://seed-iq-api-painel.t7kuqr.easypanel.host/';
 
   static const bool debug = false;
 }
